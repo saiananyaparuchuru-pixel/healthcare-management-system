@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In – MediCare{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 520px; padding-top: 40px; padding-bottom: 60px;">
+  <div class="card">
+    <div style="text-align: center; margin-bottom: 24px;">
+      <h2 style="font-size: 22px; font-weight: 800; color: var(--slate-dark);">Sign In to MediCare</h2>
+      <p style="font-size: 13px; color: var(--slate-muted); margin-top: 4px;">
+        Choose your role and enter credentials to access your dashboard.
+      </p>
+    </div>
+
+    <!-- Quick Demo Credential Buttons -->
+    <div style="background: var(--slate-light); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin-bottom: 20px;">
+      <span style="display: block; font-size: 11px; font-weight: 700; color: var(--slate-muted); text-transform: uppercase; margin-bottom: 8px;">
+        Demo Quick Fill:
+      </span>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button type="button" class="btn btn-outline btn-sm" onclick="fillDemo('patient')">
+          Patient (patient1)
+        </button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="fillDemo('doctor')">
+          Doctor (doctor1)
+        </button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="fillDemo('admin')">
+          Admin (admin)
+        </button>
+      </div>
+    </div>
+
+    <form method="POST" action="{{ url_for('login') }}">
+      <div class="form-group">
+        <label for="role">Select Role *</label>
+        <select name="role" id="role" class="form-control" required>
+          <option value="PATIENT" {% if request.args.get('role') == 'PATIENT' %}selected{% endif %}>Patient</option>
+          <option value="DOCTOR" {% if request.args.get('role') == 'DOCTOR' %}selected{% endif %}>Doctor</option>
+          <option value="ADMIN" {% if request.args.get('role') == 'ADMIN' %}selected{% endif %}>Admin</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="username">Username *</label>
+        <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" required autofocus>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password *</label>
+        <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+        Log In
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 20px; font-size: 12px; color: var(--slate-muted);">
+      Don't have a patient account? 
+      <a href="{{ url_for('register') }}" style="color: var(--teal-primary); font-weight: 600;">Register here</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

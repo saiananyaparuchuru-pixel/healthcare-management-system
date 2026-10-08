@@ -1,0 +1,4 @@
+# MediCare - Python Flask Requirements
+# Minimal and beginner-friendly dependencies
+Flask==3.0.3
+Werkzeug==3.0.3

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Digital Prescription – MediCare{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 30px; padding-bottom: 60px;">
+  <!-- Print & Back Control Bar -->
+  <div style="max-width: 800px; margin: 0 auto 16px; display: flex; justify-content: space-between; align-items: center;" class="no-print">
+    <a href="{{ url_for('dashboard') }}" class="btn btn-outline btn-sm">← Back to Dashboard</a>
+    <button type="button" class="btn btn-primary btn-sm" onclick="printPrescription()">
+      Print Prescription
+    </button>
+  </div>
+
+  <!-- Printable Prescription Sheet -->
+  <div class="prescription-sheet">
+    <!-- Clinic Letterhead -->
+    <div class="rx-letterhead">
+      <div>
+        <h2 style="font-size: 24px; font-weight: 800; color: var(--teal-primary);">MediCare Outpatient Clinic</h2>
+        <p style="font-size: 12px; color: var(--slate-muted); font-weight: 600;">Department of Outpatient Medicine & Specialist Consultation</p>
+        <p style="font-size: 11px; color: var(--slate-muted); margin-top: 2px;">
+          100 Health Science Avenue, Medical Park, Suite 400 · Tel: +1 (800) 555-0199
+        </p>
+      </div>
+
+      <div style="text-align: right;">
+        <span class="role-badge" style="background: var(--teal-light); color: var(--teal-primary);">OPD CLINICAL RECORD</span>
+        <p style="font-size: 11px; font-family: monospace; color: var(--slate-muted); margin-top: 6px;">Date: {{ prescription.date }}</p>
+        <p style="font-size: 11px; font-family: monospace; color: var(--slate-muted);">Rx ID: {{ prescription.prescription_id }}</p>
+      </div>
+    </div>
+
+    <!-- Doctor & Patient Row -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: var(--slate-light); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; margin-bottom: 20px; font-size: 12px;">
+      <div>
+        <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--slate-muted);">Prescribing Physician</span>
+        <h3 style="font-size: 14px; font-weight: 800; color: var(--slate-dark); margin-top: 2px;">{{ doctor.name }}</h3>
+        <p style="color: var(--teal-primary); font-weight: 600;">{{ doctor.specialization }}</p>
+        <p style="color: var(--slate-muted); font-size: 11px;">{{ doctor.qualification }}</p>
+      </div>
+
+      <div>
+        <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--slate-muted);">Patient Details</span>
+        <h3 style="font-size: 14px; font-weight: 800; color: var(--slate-dark); margin-top: 2px;">
+          {{ patient.name }} <span style="font-size: 11px; font-family: monospace; font-weight: normal; color: var(--slate-muted);">({{ patient.patient_id }})</span>
+        </h3>
+        <p style="color: var(--slate-body); font-size: 11px;">
+          Age: {{ patient.age }} Y · Gender: {{ patient.gender }} · Blood: <strong>{{ patient.blood_group }}</strong>
+        </p>
+        <p style="color: var(--slate-muted); font-size: 11px; font-family: monospace;">Appt Ref: {{ prescription.appointment_id }}</p>
+      </div>
+    </div>
+
+    <!-- Diagnosis -->
+    <div style="margin-bottom: 20px;">
+      <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--slate-muted); display: block; margin-bottom: 4px;">Clinical Diagnosis:</span>
+      <div style="background: var(--teal-light); border: 1px solid var(--teal-border); padding: 10px 14px; border-radius: 6px; font-size: 13px; font-weight: 700; color: var(--slate-dark);">
+        {{ consultation.diagnosis }}
+      </div>
+    </div>
+
+    <!-- Rx Symbol & Medicines Table -->
+    <div style="margin-bottom: 20px;">
+      <div class="rx-symbol">℞</div>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Medicine Name</th>
+              <th>Dosage</th>
+              <th>Frequency</th>
+              <th>Duration</th>
+              <th>Instructions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for med in medicines %}
+            <tr>
+              <td style="font-family: monospace; color: var(--slate-muted);">{{ loop.index }}</td>
+              <td><strong>{{ med.name }}</strong></td>
+              <td>{{ med.dosage }}</td>
+              <td>{{ med.frequency }}</td>
+              <td>{{ med.duration }}</td>
+              <td style="color: var(--slate-muted);">{{ med.instructions }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Advice -->
+    {% if consultation.advice %}
+    <div style="margin-bottom: 24px;">
+      <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--slate-muted); display: block; margin-bottom: 4px;">Physician Advice & Regimen:</span>
+      <div style="background: var(--slate-light); border: 1px solid var(--border-color); padding: 12px; border-radius: 6px; font-size: 12px; line-height: 1.6; color: var(--slate-body);">
+        {{ consultation.advice }}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Signatures -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 30px;">
+      <div style="font-size: 11px; color: var(--slate-muted);">
+        <p>✔ Digitally Authenticated by MediCare OPD System</p>
+        <p style="font-family: monospace;">Stored in medicare.db</p>
+      </div>
+
+      <div style="text-align: right;">
+        <div style="width: 180px; border-bottom: 1px solid var(--slate-dark); margin-bottom: 4px;"></div>
+        <strong style="font-size: 12px; color: var(--slate-dark);">{{ doctor.name }}</strong>
+        <p style="font-size: 11px; color: var(--slate-muted);">Attending Medical Officer</p>
+      </div>
+    </div>
+
+    <!-- Academic Disclaimer -->
+    <div style="margin-top: 24px; padding: 10px 14px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; font-size: 11px; color: #92400e;">
+      <strong>Academic Demonstration Notice:</strong> This digital prescription is generated for the MediCare Healthcare Management System mini project. It is intended for academic evaluation and does not represent real-world clinical medication orders.
+    </div>
+  </div>
+</div>
+{% endblock %}

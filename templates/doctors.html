@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Find Doctors – MediCare{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- Filter & Header -->
+  <div class="card" style="margin-bottom: 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--slate-dark);">Our Specialist Physicians</h2>
+        <p style="font-size: 13px; color: var(--slate-muted); margin-top: 2px;">
+          Retrieved dynamically from the SQLite doctors database.
+        </p>
+      </div>
+
+      <!-- Filter Form -->
+      <form method="GET" action="{{ url_for('doctors') }}" style="display: flex; gap: 8px; align-items: center;">
+        <label for="specialization" style="font-size: 12px; font-weight: 600; color: var(--slate-dark);">Filter Specialization:</label>
+        <select name="specialization" id="specialization" class="form-control" style="width: auto; padding: 6px 12px;" onchange="this.form.submit()">
+          <option value="All" {% if selected_specialization == 'All' %}selected{% endif %}>All Specialties</option>
+          {% for spec in specializations %}
+          <option value="{{ spec }}" {% if selected_specialization == spec %}selected{% endif %}>{{ spec }}</option>
+          {% endfor %}
+        </select>
+      </form>
+    </div>
+  </div>
+
+  <!-- Doctors Grid -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+    {% for doc in doctors %}
+    <div class="card" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
+          <div class="avatar-badge" style="width: 48px; height: 48px; font-size: 18px;">{{ doc.name[:2] }}</div>
+          <div>
+            <h3 style="font-size: 16px; font-weight: 800; color: var(--slate-dark);">{{ doc.name }}</h3>
+            <span style="font-size: 13px; color: var(--teal-primary); font-weight: 700;">{{ doc.specialization }}</span>
+            <p style="font-size: 11px; color: var(--slate-muted);">{{ doc.qualification }}</p>
+          </div>
+        </div>
+
+        <div style="background: var(--slate-light); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; font-size: 12px; margin-bottom: 16px; line-height: 1.6;">
+          <p><strong>Doctor ID:</strong> <span style="font-family: monospace;">{{ doc.doctor_id }}</span></p>
+          <p><strong>Experience:</strong> {{ doc.experience }}</p>
+          <p><strong>Consultation Fee:</strong> <span style="color: var(--teal-primary); font-weight: 700;">${{ doc.consultation_fee }}</span></p>
+          <p><strong>Available Days:</strong> {{ doc.available_days }}</p>
+          <p><strong>Clinic Hours:</strong> {{ doc.available_time }}</p>
+          <p><strong>Contact:</strong> {{ doc.phone }} · {{ doc.email }}</p>
+        </div>
+      </div>
+
+      <div>
+        <a href="{{ url_for('book_appointment') }}?doctor_id={{ doc.doctor_id }}" class="btn btn-primary" style="width: 100%;">
+          Book Appointment
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard – MediCare{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- Header -->
+  <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+    <div>
+      <span style="font-size: 11px; font-weight: 700; color: var(--teal-primary); text-transform: uppercase;">System Administration</span>
+      <h2 style="font-size: 22px; font-weight: 800; color: var(--slate-dark); margin: 4px 0;">Hospital Administrator Portal</h2>
+      <p style="font-size: 12px; color: var(--slate-muted);">Manage doctors, patient accounts, appointments, and billing in SQLite.</p>
+    </div>
+    <div>
+      <a href="#add-doctor-section" class="btn btn-primary btn-sm">+ Add New Doctor</a>
+    </div>
+  </div>
+
+  <!-- 5 Stat Cards Required -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-header">Total Patients</div>
+      <div class="stat-number">{{ total_patients }}</div>
+      <div class="stat-footer">Registered in SQLite</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">Total Doctors</div>
+      <div class="stat-number">{{ total_doctors }}</div>
+      <div class="stat-footer">Active medical faculty</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">Total Appointments</div>
+      <div class="stat-number">{{ total_appointments }}</div>
+      <div class="stat-footer">Total bookings logged</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">Completed Appointments</div>
+      <div class="stat-number">{{ completed_appointments }}</div>
+      <div class="stat-footer">Consultations closed</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">Pending Bills</div>
+      <div class="stat-number">{{ pending_bills }}</div>
+      <div class="stat-footer">Awaiting payment</div>
+    </div>
+  </div>
+
+  <!-- SECTION: DOCTOR MANAGEMENT (CRUD) -->
+  <div class="card" id="doctors-section">
+    <div class="card-header">
+      <div>
+        <h3 class="card-title">Doctor Management</h3>
+        <p class="card-subtitle">Manage OPD medical practitioners</p>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Specialization</th>
+            <th>Qualification</th>
+            <th>Experience</th>
+            <th>Fee</th>
+            <th>Schedule</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for doc in doctors %}
+          <tr>
+            <td style="font-family: monospace; font-weight: 700;">{{ doc.doctor_id }}</td>
+            <td><strong>{{ doc.name }}</strong></td>
+            <td>{{ doc.specialization }}</td>
+            <td>{{ doc.qualification }}</td>
+            <td>{{ doc.experience }}</td>
+            <td>${{ doc.consultation_fee }}</td>
+            <td>{{ doc.available_time }}</td>
+            <td>
+              <form method="POST" action="{{ url_for('delete_doctor', doctor_id=doc.doctor_id) }}" style="display: inline;">
+                <button type="submit" class="btn btn-outline btn-sm" style="color: var(--danger); border-color: #fecaca;" onclick="return confirm('Delete doctor {{ doc.name }}?')">
+                  Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Add Doctor Form -->
+    <div id="add-doctor-section" style="margin-top: 30px; padding: 20px; background: var(--slate-light); border: 1px solid var(--border-color); border-radius: 8px;">
+      <h4 style="font-size: 14px; font-weight: 700; color: var(--slate-dark); margin-bottom: 14px;">+ Add New Doctor</h4>
+      <form method="POST" action="{{ url_for('add_doctor') }}">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Doctor Name *</label>
+            <input type="text" name="name" class="form-control" placeholder="Dr. Arun Kumar" required>
+          </div>
+          <div class="form-group">
+            <label>Specialization *</label>
+            <select name="specialization" class="form-control" required>
+              <option value="General Medicine">General Medicine</option>
+              <option value="Cardiology">Cardiology</option>
+              <option value="Orthopedics">Orthopedics</option>
+              <option value="Dermatology">Dermatology</option>
+              <option value="Pediatrics">Pediatrics</option>
+              <option value="ENT">ENT</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Qualification *</label>
+            <input type="text" name="qualification" class="form-control" placeholder="MBBS, MD" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Experience *</label>
+            <input type="text" name="experience" class="form-control" placeholder="10 Years" required>
+          </div>
+          <div class="form-group">
+            <label>Consultation Fee ($) *</label>
+            <input type="number" name="consultation_fee" class="form-control" value="50" required>
+          </div>
+          <div class="form-group">
+            <label>Phone *</label>
+            <input type="text" name="phone" class="form-control" placeholder="+91 98765 00001" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" name="email" class="form-control" placeholder="doctor@medicare.local" required>
+          </div>
+          <div class="form-group">
+            <label>Available Days *</label>
+            <input type="text" name="available_days" class="form-control" value="Mon, Tue, Wed, Thu, Fri" required>
+          </div>
+          <div class="form-group">
+            <label>Available Time *</label>
+            <input type="text" name="available_time" class="form-control" value="09:00 AM - 01:00 PM" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-sm">
+          Save Doctor to SQLite
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- SECTION: PATIENTS VIEW -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Registered Patients Directory</h3>
+      <p class="card-subtitle">Retrieved from the SQLite patients table</p>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Patient ID</th>
+            <th>Name</th>
+            <th>Age / Gender</th>
+            <th>Blood Group</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Emergency Contact</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pat in patients %}
+          <tr>
+            <td style="font-family: monospace; font-weight: 700;">{{ pat.patient_id }}</td>
+            <td><strong>{{ pat.name }}</strong></td>
+            <td>{{ pat.age }} Y · {{ pat.gender }}</td>
+            <td><strong style="color: var(--danger);">{{ pat.blood_group }}</strong></td>
+            <td>{{ pat.phone }}</td>
+            <td>{{ pat.email }}</td>
+            <td>{{ pat.emergency_contact }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION: APPOINTMENTS VIEW -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">All Hospital Appointments</h3>
+      <p class="card-subtitle">Master appointments table</p>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Appt ID</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Date & Time</th>
+            <th>Reason</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for apt in appointments %}
+          <tr>
+            <td style="font-family: monospace; font-weight: 700;">{{ apt.appointment_id }}</td>
+            <td><strong>{{ apt.patient_name }}</strong></td>
+            <td>{{ apt.doctor_name }} ({{ apt.specialization }})</td>
+            <td>{{ apt.appointment_date }} at {{ apt.time_slot }}</td>
+            <td>{{ apt.reason }}</td>
+            <td>
+              <span class="badge badge-{{ apt.status.lower() }}">{{ apt.status }}</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION: BILLS VIEW -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">All Consultation Bills</h3>
+      <p class="card-subtitle">Fee collection ledger</p>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Bill ID</th>
+            <th>Date</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Fee</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in bills %}
+          <tr>
+            <td style="font-family: monospace; font-weight: 700;">{{ b.bill_id }}</td>
+            <td>{{ b.date }}</td>
+            <td>{{ b.patient_name }}</td>
+            <td>{{ b.doctor_name }}</td>
+            <td>${{ b.consultation_fee }}</td>
+            <td>
+              <span class="badge badge-{{ b.payment_status.lower() }}">{{ b.payment_status }}</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

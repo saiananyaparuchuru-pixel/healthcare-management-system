@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Book Appointment – MediCare{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 650px; padding-top: 30px; padding-bottom: 60px;">
+  <div class="card">
+    <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 14px; margin-bottom: 20px;">
+      <h2 style="font-size: 20px; font-weight: 800; color: var(--slate-dark);">Book an OPD Appointment</h2>
+      <p style="font-size: 13px; color: var(--slate-muted); margin-top: 4px;">
+        Choose your specialist doctor, date, and preferred time slot.
+      </p>
+    </div>
+
+    <form method="POST" action="{{ url_for('book_appointment') }}">
+      <!-- Doctor Selection -->
+      <div class="form-group">
+        <label for="doctor_id">1. Select Consulting Doctor *</label>
+        <select name="doctor_id" id="doctor_id" class="form-control" required>
+          <option value="">-- Choose Doctor --</option>
+          {% for doc in doctors %}
+          <option value="{{ doc.doctor_id }}" {% if selected_doctor_id == doc.doctor_id %}selected{% endif %}>
+            {{ doc.name }} ({{ doc.specialization }}) — Fee: ${{ doc.consultation_fee }} [{{ doc.available_time }}]
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Date and Time Slot -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="appointment_date">2. Consultation Date *</label>
+          <input type="date" name="appointment_date" id="appointment_date" class="form-control" min="{{ min_date }}" value="{{ min_date }}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="time_slot">3. Available Time Slot *</label>
+          <select name="time_slot" id="time_slot" class="form-control" required>
+            <option value="09:00 AM">09:00 AM</option>
+            <option value="09:30 AM">09:30 AM</option>
+            <option value="10:00 AM" selected>10:00 AM</option>
+            <option value="10:30 AM">10:30 AM</option>
+            <option value="11:00 AM">11:00 AM</option>
+            <option value="11:30 AM">11:30 AM</option>
+            <option value="02:00 PM">02:00 PM</option>
+            <option value="02:30 PM">02:30 PM</option>
+            <option value="03:00 PM">03:00 PM</option>
+            <option value="03:30 PM">03:30 PM</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Reason for Visit -->
+      <div class="form-group">
+        <label for="reason">4. Reason for Visit / Chief Symptoms *</label>
+        <textarea name="reason" id="reason" rows="3" class="form-control" placeholder="Describe symptoms or reasons for visit (e.g. fever for 2 days, persistent cough, routine health checkup)..." required></textarea>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          Confirm Appointment Booking
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

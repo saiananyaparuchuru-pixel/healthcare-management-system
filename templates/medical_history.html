@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Medical History – MediCare{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">Patient Medical History</h2>
+        <p class="card-subtitle">Permanent, read-only consultation archives retrieved from SQLite</p>
+      </div>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-outline btn-sm">← Dashboard</a>
+    </div>
+
+    {% if history %}
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      {% for item in history %}
+      <div style="background: var(--slate-light); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 14px;">
+          <div>
+            <span style="font-size: 11px; font-family: monospace; font-weight: 700; color: var(--teal-primary);">{{ item.consultation_id }}</span>
+            <h3 style="font-size: 16px; font-weight: 800; color: var(--slate-dark); margin-top: 2px;">
+              Diagnosis: {{ item.diagnosis }}
+            </h3>
+            <p style="font-size: 12px; color: var(--slate-muted);">
+              Consulting Doctor: <strong>{{ item.doctor_name }}</strong> ({{ item.specialization }}) · Date: {{ item.consultation_date }}
+            </p>
+          </div>
+
+          {% if item.prescription_id %}
+          <a href="{{ url_for('view_prescription', prescription_id=item.prescription_id) }}" class="btn btn-primary btn-sm">
+            View Prescription
+          </a>
+          {% endif %}
+        </div>
+
+        <div class="form-row" style="margin-bottom: 12px;">
+          <div style="background: #ffffff; padding: 12px; border-radius: 6px; border: 1px solid var(--border-color);">
+            <strong style="font-size: 11px; color: var(--slate-muted); display: block; margin-bottom: 4px;">Reported Symptoms:</strong>
+            <p style="font-size: 12px; color: var(--slate-body);">{{ item.symptoms }}</p>
+          </div>
+
+          <div style="background: #ffffff; padding: 12px; border-radius: 6px; border: 1px solid var(--border-color);">
+            <strong style="font-size: 11px; color: var(--slate-muted); display: block; margin-bottom: 4px;">Doctor Notes:</strong>
+            <p style="font-size: 12px; color: var(--slate-body);">{{ item.doctor_notes or 'No specific notes recorded.' }}</p>
+          </div>
+        </div>
+
+        {% if item.advice %}
+        <div style="background: var(--teal-light); border: 1px solid var(--teal-border); padding: 10px 14px; border-radius: 6px; font-size: 12px;">
+          <strong style="color: var(--teal-primary);">Physician Advice:</strong>
+          <p style="color: var(--slate-dark); margin-top: 2px;">{{ item.advice }}</p>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p style="font-size: 13px; color: var(--slate-muted); text-align: center; padding: 40px;">
+      No past clinical consultations on file yet.
+    </p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

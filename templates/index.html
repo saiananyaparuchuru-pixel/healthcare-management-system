@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block title %}MediCare – Smart Healthcare, Simplified{% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<section class="hero-section">
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-badge">
+        <span>●</span> OPD & Clinic Management Platform
+      </div>
+      <h1 class="hero-title">
+        Smart Healthcare, <br>
+        <span>Simplified.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Manage appointments, consultations, prescriptions and patient records from one simple platform.
+      </p>
+
+      <div class="hero-actions">
+        <a href="{{ url_for('book_appointment') }}" class="btn btn-primary">Book Appointment</a>
+        <a href="{{ url_for('doctors') }}" class="btn btn-outline">Find a Doctor</a>
+      </div>
+
+      <div class="hero-metrics">
+        <div>
+          <div class="metric-num">6+</div>
+          <div class="metric-label">Specialist OPDs</div>
+        </div>
+        <div>
+          <div class="metric-num">100%</div>
+          <div class="metric-label">Digital Prescriptions</div>
+        </div>
+        <div>
+          <div class="metric-num">Instant</div>
+          <div class="metric-label">OPD Invoicing</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workflow Preview Card -->
+    <div class="workflow-card">
+      <div class="workflow-header">
+        <span class="workflow-title">MediCare OPD Flow</span>
+        <span style="font-size: 11px; color: var(--teal-primary); font-weight: 600;">Outpatient Terminal</span>
+      </div>
+
+      <div class="step-item">
+        <div class="step-badge">1</div>
+        <div class="step-text">
+          <strong>Patient Registration & Login</strong>
+          <span>Demographics, contact info, and blood group stored in SQLite</span>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-badge">2</div>
+        <div class="step-text">
+          <strong>Doctor Selection & Booking</strong>
+          <span>Real-time conflict detection prevents double bookings</span>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-badge">3</div>
+        <div class="step-text">
+          <strong>Doctor Consultation</strong>
+          <span>Record symptoms, diagnosis, and notes into database</span>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-badge">4</div>
+        <div class="step-text">
+          <strong>Digital Prescription & Billing</strong>
+          <span>Printable Rx sheet and instant fee reconciliation</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 18px;">
+        <a href="{{ url_for('register') }}" class="btn btn-dark" style="width: 100%;">
+          Register as New Patient →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES SECTION -->
+<section id="services" class="container" style="padding-top: 50px;">
+  <div style="text-align: center; max-width: 650px; margin: 0 auto 36px;">
+    <span style="font-size: 11px; font-weight: 700; color: var(--teal-primary); text-transform: uppercase;">Clinical Departments</span>
+    <h2 style="font-size: 26px; font-weight: 800; color: var(--slate-dark); margin: 6px 0;">Comprehensive OPD Services</h2>
+    <p style="font-size: 13px; color: var(--slate-muted);">
+      Specialized outpatient clinical units equipped to deliver prompt diagnosis and personalized treatment.
+    </p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+    <div class="card" style="margin-bottom: 0;">
+      <h3 style="font-size: 16px; font-weight: 700; color: var(--slate-dark); margin-bottom: 8px;">General Medicine</h3>
+      <p style="font-size: 12px; color: var(--slate-body); margin-bottom: 12px;">First-line outpatient diagnosis, acute illness management, viral fevers, and comprehensive health monitoring.</p>
+      <span style="font-size: 11px; color: var(--slate-muted);"><strong>Common:</strong> Fever, diabetes, hypertension, cough</span>
+    </div>
+
+    <div class="card" style="margin-bottom: 0;">
+      <h3 style="font-size: 16px; font-weight: 700; color: var(--slate-dark); margin-bottom: 8px;">Cardiology</h3>
+      <p style="font-size: 12px; color: var(--slate-body); margin-bottom: 12px;">Cardiac health assessments, non-invasive blood pressure care, arrhythmias, and preventive cholesterol regimens.</p>
+      <span style="font-size: 11px; color: var(--slate-muted);"><strong>Common:</strong> Chest tightness, palpitations, ECG review</span>
+    </div>
+
+    <div class="card" style="margin-bottom: 0;">
+      <h3 style="font-size: 16px; font-weight: 700; color: var(--slate-dark); margin-bottom: 8px;">Dermatology</h3>
+      <p style="font-size: 12px; color: var(--slate-body); margin-bottom: 12px;">Specialized diagnosis of skin allergies, contact dermatitis, eczema, psoriasis, and clinical skincare.</p>
+      <span style="font-size: 11px; color: var(--slate-muted);"><strong>Common:</strong> Allergic rashes, eczema, acne flare-ups</span>
+    </div>
+
+    <div class="card" style="margin-bottom: 0;">
+      <h3 style="font-size: 16px; font-weight: 700; color: var(--slate-dark); margin-bottom: 8px;">Pediatrics</h3>
+      <p style="font-size: 12px; color: var(--slate-body); margin-bottom: 12px;">Dedicated child healthcare, developmental tracking, routine vaccinations, and pediatric wellness care.</p>
+      <span style="font-size: 11px; color: var(--slate-muted);"><strong>Common:</strong> Child wellness, vaccinations, growth check</span>
+    </div>
+
+    <div class="card" style="margin-bottom: 0;">
+      <h3 style="font-size: 16px; font-weight: 700; color: var(--slate-dark); margin-bottom: 8px;">Orthopedics</h3>
+      <p style="font-size: 12px; color: var(--slate-body); margin-bottom: 12px;">Bone and joint health, spine management, post-injury mobility rehabilitation, and arthritis therapies.</p>
+      <span style="font-size: 11px; color: var(--slate-muted);"><strong>Common:</strong> Joint stiffness, back pain, sprains, fractures</span>
+    </div>
+
+    <div class="card" style="margin-bottom: 0;">
+      <h3 style="font-size: 16px; font-weight: 700; color: var(--slate-dark); margin-bottom: 8px;">ENT</h3>
+      <p style="font-size: 12px; color: var(--slate-body); margin-bottom: 12px;">Specialized outpatient treatment for sinus conditions, ear infections, hearing evaluation, and throat ailments.</p>
+      <span style="font-size: 11px; color: var(--slate-muted);"><strong>Common:</strong> Sinusitis, ear pain, tonsillitis, vertigo</span>
+    </div>
+  </div>
+</section>
+
+<!-- OUR DOCTORS SECTION (PULLED FROM SQLITE) -->
+<section id="doctors" class="container" style="padding-top: 50px;">
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
+    <div>
+      <span style="font-size: 11px; font-weight: 700; color: var(--teal-primary); text-transform: uppercase;">Medical Faculty</span>
+      <h2 style="font-size: 26px; font-weight: 800; color: var(--slate-dark); margin: 4px 0;">Consult Our Specialist Physicians</h2>
+      <p style="font-size: 13px; color: var(--slate-muted);">Board-certified doctors available for outpatient consultation.</p>
+    </div>
+    <a href="{{ url_for('doctors') }}" class="btn btn-primary btn-sm">View All Doctors</a>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+    {% for doc in doctors[:3] %}
+    <div class="card" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+          <div class="avatar-badge">{{ doc.name[:2] }}</div>
+          <div>
+            <h4 style="font-size: 14px; font-weight: 700; color: var(--slate-dark);">{{ doc.name }}</h4>
+            <span style="font-size: 12px; color: var(--teal-primary); font-weight: 600;">{{ doc.specialization }}</span>
+            <p style="font-size: 11px; color: var(--slate-muted);">{{ doc.qualification }}</p>
+          </div>
+        </div>
+        <div style="background: var(--slate-light); padding: 10px; border-radius: 6px; font-size: 11px; color: var(--slate-body); margin-bottom: 14px;">
+          <p><strong>Experience:</strong> {{ doc.experience }}</p>
+          <p><strong>Consultation Fee:</strong> ${{ doc.consultation_fee }}</p>
+          <p><strong>Schedule:</strong> {{ doc.available_time }}</p>
+        </div>
+      </div>
+      <a href="{{ url_for('book_appointment') }}?doctor_id={{ doc.doctor_id }}" class="btn btn-primary btn-sm" style="width: 100%;">
+        Book Slot
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" style="background: var(--slate-light); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 50px 0; margin-top: 50px;">
+  <div class="container">
+    <div style="text-align: center; max-width: 600px; margin: 0 auto 30px;">
+      <span style="font-size: 11px; font-weight: 700; color: var(--teal-primary); text-transform: uppercase;">Workflow</span>
+      <h2 style="font-size: 24px; font-weight: 800; color: var(--slate-dark); margin: 6px 0;">How It Works</h2>
+      <p style="font-size: 13px; color: var(--slate-muted);">Step-by-step digital process from appointment to consultation and invoice.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+      <div class="card" style="margin-bottom: 0;">
+        <span style="font-size: 11px; font-weight: 700; color: var(--teal-primary); font-family: monospace;">01. REGISTER</span>
+        <h4 style="font-size: 14px; font-weight: 700; margin: 6px 0;">Patient Registration</h4>
+        <p style="font-size: 12px; color: var(--slate-muted);">Create patient account. Automatically issued a unique Patient ID (PAT001).</p>
+      </div>
+
+      <div class="card" style="margin-bottom: 0;">
+        <span style="font-size: 11px; font-weight: 700; color: var(--teal-primary); font-family: monospace;">02. SELECT & BOOK</span>
+        <h4 style="font-size: 14px; font-weight: 700; margin: 6px 0;">Doctor & Time Slot</h4>
+        <p style="font-size: 12px; color: var(--slate-muted);">Choose specialist doctor and pick an available consultation time slot.</p>
+      </div>
+
+      <div class="card" style="margin-bottom: 0;">
+        <span style="font-size: 11px; font-weight: 700; color: var(--teal-primary); font-family: monospace;">03. CONSULTATION</span>
+        <h4 style="font-size: 14px; font-weight: 700; margin: 6px 0;">Doctor Consultation</h4>
+        <p style="font-size: 12px; color: var(--slate-muted);">Doctor records clinical observations, symptoms, diagnosis, and advice in SQLite.</p>
+      </div>
+
+      <div class="card" style="margin-bottom: 0;">
+        <span style="font-size: 11px; font-weight: 700; color: var(--teal-primary); font-family: monospace;">04. PRESCRIPTION & BILL</span>
+        <h4 style="font-size: 14px; font-weight: 700; margin: 6px 0;">Prescription & Bill</h4>
+        <p style="font-size: 12px; color: var(--slate-muted);">Download digital Rx and review consultation invoice with one-click payment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT & CONTACT -->
+<section id="about" class="container" style="padding-top: 50px;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+    <div class="card" style="margin-bottom: 0;">
+      <h3 style="font-size: 18px; font-weight: 700; color: var(--slate-dark); margin-bottom: 12px;">Why Choose Us</h3>
+      <p style="font-size: 13px; color: var(--slate-body); margin-bottom: 12px; line-height: 1.6;">
+        MediCare is designed to modernize hospital outpatient departments (OPD). It removes paper queues, double bookings, and lost medical charts by establishing a single relational SQLite source of truth.
+      </p>
+      <ul style="list-style: none; font-size: 12px; color: var(--slate-body); line-height: 1.8;">
+        <li>✔ Zero double-booking slot validation</li>
+        <li>✔ Complete patient medical history tracking</li>
+        <li>✔ Itemized digital prescriptions and invoices</li>
+        <li>✔ Simple role-based access control (Patient, Doctor, Admin)</li>
+      </ul>
+    </div>
+
+    <div id="contact" class="card" style="margin-bottom: 0;">
+      <h3 style="font-size: 18px; font-weight: 700; color: var(--slate-dark); margin-bottom: 12px;">Contact Information</h3>
+      <p style="font-size: 13px; color: var(--slate-body); margin-bottom: 12px;">
+        <strong>MediCare Outpatient Clinic</strong><br>
+        100 Health Science Avenue, Medical Park, Suite 400<br>
+        Open Monday through Saturday: 08:30 AM – 06:00 PM
+      </p>
+      <p style="font-size: 12px; color: var(--slate-muted);">
+        <strong>Phone:</strong> +1 (800) 555-0199<br>
+        <strong>Email:</strong> opd-desk@medicare.local
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,745 @@
+/* =======================================================
+   MediCare - Healthcare Management System
+   Clean White / Teal Healthcare Theme CSS
+   Preserving Existing UI Design Exactly
+   ======================================================= */
+
+:root {
+  --teal-primary: #0f766e;
+  --teal-hover: #115e59;
+  --teal-light: #f0fdfa;
+  --teal-border: #ccfbf1;
+  --slate-dark: #0f172a;
+  --slate-body: #334155;
+  --slate-muted: #64748b;
+  --slate-light: #f8fafc;
+  --border-color: #e2e8f0;
+  --card-bg: #ffffff;
+  --danger: #dc2626;
+  --danger-light: #fef2f2;
+  --success: #16a34a;
+  --success-light: #f0fdf4;
+  --warning: #d97706;
+  --warning-light: #fffbeb;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--slate-light);
+  color: var(--slate-body);
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =======================================================
+   HEADER & NAVBAR (EXACT TOP BAR CONTRACT)
+   ======================================================= */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-color);
+  height: 64px;
+  display: flex;
+  align-items: center;
+}
+
+.header-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Brand Wordmark */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--slate-dark);
+}
+
+.brand-icon {
+  width: 32px;
+  height: 32px;
+  background-color: var(--teal-primary);
+  color: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 18px;
+}
+
+/* Nav Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--slate-muted);
+  transition: color 0.15s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--teal-primary);
+}
+
+/* Header Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.role-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: var(--teal-light);
+  color: var(--teal-primary);
+  border: 1px solid var(--teal-border);
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+}
+
+/* =======================================================
+   BUTTONS
+   ======================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.btn-primary {
+  background-color: var(--teal-primary);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: var(--teal-hover);
+}
+
+.btn-outline {
+  background-color: #ffffff;
+  color: var(--slate-body);
+  border-color: var(--border-color);
+}
+
+.btn-outline:hover {
+  background-color: var(--slate-light);
+  color: var(--slate-dark);
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.btn-danger {
+  background-color: var(--danger);
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background-color: #b91c1c;
+}
+
+.btn-success {
+  background-color: var(--success);
+  color: #ffffff;
+}
+
+.btn-success:hover {
+  background-color: #15803d;
+}
+
+.btn-dark {
+  background-color: var(--slate-dark);
+  color: #ffffff;
+}
+
+.btn-dark:hover {
+  background-color: #1e293b;
+}
+
+/* =======================================================
+   FLASH ALERTS
+   ======================================================= */
+.flash-container {
+  max-width: 1200px;
+  margin: 16px auto 0;
+  padding: 0 20px;
+}
+
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  margin-bottom: 12px;
+  border: 1px solid transparent;
+}
+
+.alert-success {
+  background-color: var(--success-light);
+  color: var(--success);
+  border-color: #bbf7d0;
+}
+
+.alert-danger, .alert-error {
+  background-color: var(--danger-light);
+  color: var(--danger);
+  border-color: #fecaca;
+}
+
+.alert-warning {
+  background-color: var(--warning-light);
+  color: var(--warning);
+  border-color: #fde68a;
+}
+
+.alert-info {
+  background-color: var(--teal-light);
+  color: var(--teal-primary);
+  border-color: var(--teal-border);
+}
+
+/* =======================================================
+   CONTAINER & LAYOUT
+   ======================================================= */
+.main-wrapper {
+  min-height: calc(100vh - 140px);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* =======================================================
+   HERO SECTION (EXACT PRESERVED DESIGN)
+   ======================================================= */
+.hero-section {
+  background: linear-gradient(180deg, rgba(240, 253, 250, 0.7) 0%, #ffffff 100%);
+  padding: 60px 0 40px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(204, 251, 241, 0.8);
+  color: var(--teal-primary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--slate-dark);
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.hero-title span {
+  color: var(--teal-primary);
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  color: var(--slate-muted);
+  max-width: 520px;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.hero-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.metric-num {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--slate-dark);
+  font-family: monospace;
+}
+
+.metric-label {
+  font-size: 11px;
+  color: var(--slate-muted);
+}
+
+/* Hero Preview Card */
+.workflow-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+}
+
+.workflow-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 16px;
+}
+
+.workflow-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--slate-dark);
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--slate-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  margin-bottom: 10px;
+}
+
+.step-badge {
+  width: 26px;
+  height: 26px;
+  background: var(--teal-light);
+  color: var(--teal-primary);
+  font-weight: 700;
+  font-size: 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-text strong {
+  display: block;
+  font-size: 12px;
+  color: var(--slate-dark);
+}
+
+.step-text span {
+  font-size: 11px;
+  color: var(--slate-muted);
+}
+
+/* =======================================================
+   DASHBOARD SIDEBAR & MAIN GRID LAYOUT
+   ======================================================= */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.sidebar-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+.user-snippet {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--teal-light);
+  border: 1px solid var(--teal-border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+
+.avatar-badge {
+  width: 40px;
+  height: 40px;
+  background: var(--teal-primary);
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.user-details h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--slate-dark);
+}
+
+.user-details p {
+  font-size: 11px;
+  color: var(--slate-muted);
+  font-family: monospace;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--slate-body);
+  transition: all 0.15s ease;
+}
+
+.nav-item:hover {
+  background: var(--slate-light);
+  color: var(--slate-dark);
+}
+
+.nav-item.active {
+  background: var(--teal-primary);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* =======================================================
+   STAT CARDS
+   ======================================================= */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.stat-header {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--slate-muted);
+  margin-bottom: 6px;
+}
+
+.stat-number {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--slate-dark);
+  font-family: monospace;
+}
+
+.stat-footer {
+  font-size: 11px;
+  color: var(--slate-muted);
+  margin-top: 4px;
+}
+
+/* =======================================================
+   CARDS & TABLES
+   ======================================================= */
+.card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--slate-dark);
+}
+
+.card-subtitle {
+  font-size: 12px;
+  color: var(--slate-muted);
+  margin-top: 2px;
+}
+
+/* Tables */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+}
+
+.table th {
+  background: #f8fafc;
+  padding: 10px 14px;
+  font-weight: 600;
+  color: var(--slate-dark);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--slate-body);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr:hover td {
+  background-color: #f8fafc;
+}
+
+/* Status Badges */
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.badge-scheduled {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.badge-completed {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.badge-cancelled {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.badge-paid {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.badge-pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* =======================================================
+   FORMS & CONTROLS
+   ======================================================= */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--slate-dark);
+  margin-bottom: 6px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--slate-dark);
+  background-color: #ffffff;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.15s ease;
+}
+
+.form-control:focus {
+  border-color: var(--teal-primary);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+/* =======================================================
+   PRESCRIPTION SHEET (PRINTABLE)
+   ======================================================= */
+.prescription-sheet {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 36px;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.rx-letterhead {
+  border-bottom: 2px solid var(--teal-primary);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.rx-symbol {
+  font-size: 28px;
+  font-family: serif;
+  font-weight: 900;
+  color: var(--teal-primary);
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+/* =======================================================
+   FOOTER
+   ======================================================= */
+.site-footer {
+  border-top: 1px solid var(--border-color);
+  background: #ffffff;
+  padding: 24px 0;
+  margin-top: 40px;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--slate-muted);
+}
+
+/* =======================================================
+   PRINT STYLES
+   ======================================================= */
+@media print {
+  .site-header,
+  .site-footer,
+  .no-print,
+  .sidebar-card,
+  .btn {
+    display: none !important;
+  }
+  .main-wrapper {
+    margin: 0;
+    padding: 0;
+  }
+  .prescription-sheet {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    max-width: 100%;
+  }
+}
+
+/* Responsive */
+@media (max-width: 868px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+  .nav-links {
+    display: none;
+  }
+}

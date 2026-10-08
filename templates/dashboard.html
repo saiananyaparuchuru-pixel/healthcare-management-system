@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard – MediCare{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% if session.get('role') == 'PATIENT' %}
+  <!-- PATIENT DASHBOARD -->
+  <div class="dashboard-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar-card">
+      <div class="user-snippet">
+        <div class="avatar-badge">{{ patient.name[:2] }}</div>
+        <div class="user-details">
+          <h4>{{ patient.name }}</h4>
+          <p>ID: {{ patient.patient_id }}</p>
+          <span style="font-size: 10px; color: var(--teal-primary); font-weight: 700;">Blood: {{ patient.blood_group }}</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="{{ url_for('dashboard') }}" class="nav-item active">Dashboard</a>
+        <a href="{{ url_for('profile') }}" class="nav-item">My Profile</a>
+        <a href="{{ url_for('doctors') }}" class="nav-item">Find Doctor</a>
+        <a href="{{ url_for('book_appointment') }}" class="nav-item">Book Appointment</a>
+        <a href="{{ url_for('appointments') }}" class="nav-item">My Appointments</a>
+        <a href="{{ url_for('medical_history') }}" class="nav-item">Medical History</a>
+        <a href="{{ url_for('prescriptions') }}" class="nav-item">Prescriptions</a>
+        <a href="{{ url_for('bills') }}" class="nav-item">Bills & Receipts</a>
+        <a href="{{ url_for('logout') }}" class="nav-item" style="color: var(--danger); margin-top: 10px;">Logout</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Welcome Header -->
+      <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: gap: 16px;">
+        <div>
+          <span style="font-size: 11px; font-weight: 700; color: var(--teal-primary); text-transform: uppercase;">Patient Portal</span>
+          <h2 style="font-size: 22px; font-weight: 800; color: var(--slate-dark); margin: 4px 0;">Welcome, {{ patient.name }}!</h2>
+          <p style="font-size: 12px; color: var(--slate-muted);">Patient ID: <strong style="color: var(--slate-dark); font-family: monospace;">{{ patient.patient_id }}</strong> · Permanent record in SQLite</p>
+        </div>
+        <div>
+          <a href="{{ url_for('book_appointment') }}" class="btn btn-primary btn-sm">+ Book New Appointment</a>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">Upcoming Appointments</div>
+          <div class="stat-number">{{ upcoming_count }}</div>
+          <div class="stat-footer">Scheduled visits</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">Completed Visits</div>
+          <div class="stat-number">{{ completed_count }}</div>
+          <div class="stat-footer">Past consultations</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">Prescriptions</div>
+          <div class="stat-number">{{ prescriptions_count }}</div>
+          <div class="stat-footer">Digital Rx issued</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">Total Bills</div>
+          <div class="stat-number">{{ bills_count }}</div>
+          <div class="stat-footer">Consultation invoices</div>
+        </div>
+      </div>
+
+      <!-- Upcoming Appointments Table -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">My Recent Appointments</h3>
+            <p class="card-subtitle">Showing active and recent appointments retrieved from SQLite</p>
+          </div>
+          <a href="{{ url_for('appointments') }}" class="btn btn-outline btn-sm">View All</a>
+        </div>
+
+        {% if appointments %}
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Appt ID</th>
+                <th>Doctor</th>
+                <th>Specialization</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for apt in appointments[:4] %}
+              <tr>
+                <td style="font-family: monospace; font-weight: 700;">{{ apt.appointment_id }}</td>
+                <td><strong>{{ apt.doctor_name }}</strong></td>
+                <td>{{ apt.specialization }}</td>
+                <td>{{ apt.appointment_date }} at {{ apt.time_slot }}</td>
+                <td>
+                  <span class="badge badge-{{ apt.status.lower() }}">{{ apt.status }}</span>
+                </td>
+                <td>
+                  {% if apt.status == 'Scheduled' %}
+                  <form method="POST" action="{{ url_for('cancel_appointment', appointment_id=apt.appointment_id) }}" style="display: inline;">
+                    <button type="submit" class="btn btn-outline btn-sm" style="color: var(--danger); border-color: #fecaca;" onclick="return confirm('Cancel this appointment?')">
+                      Cancel
+                    </button>
+                  </form>
+                  {% else %}
+                  <span style="font-size: 11px; color: var(--slate-muted);">Archived</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p style="font-size: 13px; color: var(--slate-muted); text-align: center; padding: 20px;">
+          No appointments found. <a href="{{ url_for('book_appointment') }}" style="color: var(--teal-primary); font-weight: 600;">Book your first appointment now!</a>
+        </p>
+        {% endif %}
+      </div>
+    </main>
+  </div>
+
+  {% elif session.get('role') == 'DOCTOR' %}
+  <!-- DOCTOR DASHBOARD -->
+  <div class="dashboard-layout">
+    <aside class="sidebar-card">
+      <div class="user-snippet">
+        <div class="avatar-badge">{{ doctor.name[:2] }}</div>
+        <div class="user-details">
+          <h4>{{ doctor.name }}</h4>
+          <p>ID: {{ doctor.doctor_id }}</p>
+          <span style="font-size: 10px; color: var(--teal-primary); font-weight: 700;">{{ doctor.specialization }}</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="{{ url_for('dashboard') }}" class="nav-item active">Dashboard</a>
+        <a href="{{ url_for('appointments') }}" class="nav-item">All Appointments</a>
+        <a href="{{ url_for('logout') }}" class="nav-item" style="color: var(--danger); margin-top: 10px;">Logout</a>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="card">
+        <span style="font-size: 11px; font-weight: 700; color: var(--teal-primary); text-transform: uppercase;">Doctor Console</span>
+        <h2 style="font-size: 22px; font-weight: 800; color: var(--slate-dark); margin: 4px 0;">Welcome, {{ doctor.name }}</h2>
+        <p style="font-size: 12px; color: var(--slate-muted);">Department of {{ doctor.specialization }} · Consultation Fee: ${{ doctor.consultation_fee }}</p>
+      </div>
+
+      <!-- Doctor Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">Today's Appointments</div>
+          <div class="stat-number">{{ today_count }}</div>
+          <div class="stat-footer">Awaiting consultation</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">Upcoming Appointments</div>
+          <div class="stat-number">{{ upcoming_count }}</div>
+          <div class="stat-footer">Scheduled queue</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">Completed Consultations</div>
+          <div class="stat-number">{{ completed_count }}</div>
+          <div class="stat-footer">Visits finished</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">Total Patients</div>
+          <div class="stat-number">{{ total_patients }}</div>
+          <div class="stat-footer">Under your care</div>
+        </div>
+      </div>
+
+      <!-- Patient Queue -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Patient Queue for Consultation</h3>
+          <p class="card-subtitle">Click "Consult" to record symptoms, diagnosis, and issue prescription</p>
+        </div>
+
+        {% if appointments %}
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Appt ID</th>
+                <th>Patient Name</th>
+                <th>Age / Gender</th>
+                <th>Date & Slot</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for apt in appointments %}
+              <tr>
+                <td style="font-family: monospace; font-weight: 700;">{{ apt.appointment_id }}</td>
+                <td><strong>{{ apt.patient_name }}</strong></td>
+                <td>{{ apt.age }} Y · {{ apt.gender }} ({{ apt.blood_group }})</td>
+                <td>{{ apt.appointment_date }} at {{ apt.time_slot }}</td>
+                <td>{{ apt.reason }}</td>
+                <td>
+                  <span class="badge badge-{{ apt.status.lower() }}">{{ apt.status }}</span>
+                </td>
+                <td>
+                  {% if apt.status == 'Scheduled' %}
+                  <a href="{{ url_for('consultation', appointment_id=apt.appointment_id) }}" class="btn btn-primary btn-sm">
+                    Consult
+                  </a>
+                  {% else %}
+                  <span style="font-size: 11px; color: var(--success); font-weight: 600;">Completed</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p style="font-size: 13px; color: var(--slate-muted); text-align: center; padding: 20px;">
+          No appointments in your queue right now.
+        </p>
+        {% endif %}
+      </div>
+    </main>
+  </div>
+
+  {% elif session.get('role') == 'ADMIN' %}
+  <!-- ADMIN DASHBOARD (Redirects or includes) -->
+  <script>window.location.href = "{{ url_for('admin') }}";</script>
+  {% endif %}
+</div>
+{% endblock %}

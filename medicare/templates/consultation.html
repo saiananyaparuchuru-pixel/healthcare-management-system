@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Doctor Consultation Desk – MediCare{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 860px;">
+  <!-- Patient Header Summary -->
+  <div class="card" style="border-left: 4px solid var(--teal-primary);">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+      <div>
+        <span style="font-size: 11px; font-weight: 700; color: var(--teal-primary); text-transform: uppercase;">Active Consultation Case</span>
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--slate-dark); margin-top: 2px;">{{ patient.name }}</h2>
+        <p style="font-size: 12px; color: var(--slate-muted);">
+          Patient ID: <strong style="font-family: monospace;">{{ patient.patient_id }}</strong> · Appointment Ref: <strong style="font-family: monospace;">{{ appointment.appointment_id }}</strong>
+        </p>
+      </div>
+      <span class="badge badge-scheduled">Appointment Scheduled</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; background: var(--slate-light); padding: 12px; border-radius: 6px; font-size: 12px;">
+      <div>
+        <span style="color: var(--slate-muted); display: block;">Age & Gender</span>
+        <strong>{{ patient.age }} Years · {{ patient.gender }}</strong>
+      </div>
+      <div>
+        <span style="color: var(--slate-muted); display: block;">Blood Group</span>
+        <strong style="color: var(--danger);">{{ patient.blood_group }}</strong>
+      </div>
+      <div>
+        <span style="color: var(--slate-muted); display: block;">Contact</span>
+        <strong>{{ patient.phone }}</strong>
+      </div>
+      <div>
+        <span style="color: var(--slate-muted); display: block;">Consultation Date</span>
+        <strong>{{ appointment.appointment_date }} ({{ appointment.time_slot }})</strong>
+      </div>
+    </div>
+
+    <div style="margin-top: 12px; padding: 10px 14px; background: var(--teal-light); border: 1px solid var(--teal-border); border-radius: 6px; font-size: 12px;">
+      <strong style="color: var(--teal-primary);">Reason Stated by Patient:</strong>
+      <p style="color: var(--slate-dark); margin-top: 2px;">{{ appointment.reason }}</p>
+    </div>
+  </div>
+
+  <!-- Consultation & Prescription Form -->
+  <form method="POST" action="{{ url_for('consultation', appointment_id=appointment.appointment_id) }}">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">1. Clinical Findings & Assessment</h3>
+        <p class="card-subtitle">Saved permanently into the SQLite consultations table</p>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="symptoms">Reported Symptoms & Vitals *</label>
+          <textarea name="symptoms" id="symptoms" rows="3" class="form-control" placeholder="e.g. Mild chest discomfort, palpitations, blood pressure 130/85 mmHg, pulse 76..." required>{{ appointment.reason }}</textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="diagnosis">Clinical Diagnosis *</label>
+          <textarea name="diagnosis" id="diagnosis" rows="3" class="form-control" placeholder="e.g. Early Stage Benign Sinus Tachycardia / Acute Contact Dermatitis..." required></textarea>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="doctor_notes">Doctor Notes & Observations</label>
+          <textarea name="doctor_notes" id="doctor_notes" rows="2" class="form-control" placeholder="e.g. Resting ECG normal, clear S1/S2 heart sounds, adequate hydration advised..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="advice">Advice & Follow-up Instructions</label>
+          <textarea name="advice" id="advice" rows="2" class="form-control" placeholder="e.g. Reduce caffeine intake, light 20 min daily walking, review in 3 weeks..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Digital Prescription Builder (℞) -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3 class="card-title">
+            <span style="font-family: serif; font-size: 18px; font-style: italic; color: var(--teal-primary);">℞</span>
+            2. Digital Prescription
+          </h3>
+          <p class="card-subtitle">Prescribe itemized medications with dosages and schedules</p>
+        </div>
+        <button type="button" id="add-medicine-btn" class="btn btn-outline btn-sm">
+          + Add Medicine Row
+        </button>
+      </div>
+
+      <div id="medicine-rows-container">
+        <!-- Default Initial Row -->
+        <div class="medicine-row form-row" style="margin-bottom: 12px; padding: 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label style="font-size: 11px;">Medicine Name *</label>
+            <input type="text" name="med_name[]" class="form-control" value="Paracetamol 500 mg" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label style="font-size: 11px;">Dosage *</label>
+            <input type="text" name="med_dosage[]" class="form-control" value="1 Tablet" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label style="font-size: 11px;">Frequency *</label>
+            <input type="text" name="med_frequency[]" class="form-control" value="Twice daily" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label style="font-size: 11px;">Duration *</label>
+            <input type="text" name="med_duration[]" class="form-control" value="3 days" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label style="font-size: 11px;">Instructions</label>
+            <input type="text" name="med_instructions[]" class="form-control" value="After food">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Complete Action -->
+    <div class="card" style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc;">
+      <div>
+        <strong style="color: var(--slate-dark); font-size: 13px;">Completion Actions:</strong>
+        <p style="font-size: 11px; color: var(--slate-muted);">
+          Marks appointment as Completed · Stores Prescription in SQLite · Generates ${{ doctor.consultation_fee }} Bill
+        </p>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        Complete Consultation & Issue Prescription
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

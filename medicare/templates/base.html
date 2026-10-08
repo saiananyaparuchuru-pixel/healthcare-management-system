@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}MediCare – Healthcare Management System{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <!-- HEADER & NAVIGATION (Preserved Exactly) -->
+  <header class="site-header">
+    <div class="header-container">
+      <!-- Brand Logo -->
+      <a href="{{ url_for('index') }}" class="brand">
+        <div class="brand-icon">+</div>
+        <span>MediCare</span>
+      </a>
+
+      <!-- Navigation Links -->
+      <ul class="nav-links">
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('doctors') }}">Doctors</a></li>
+        <li><a href="{{ url_for('index') }}#services">Services</a></li>
+        <li><a href="{{ url_for('index') }}#about">About</a></li>
+        <li><a href="{{ url_for('index') }}#how-it-works">How It Works</a></li>
+        <li><a href="{{ url_for('index') }}#contact">Contact</a></li>
+      </ul>
+
+      <!-- User Role & Actions -->
+      <div class="header-actions">
+        {% if session.get('user_id') %}
+          <span class="role-badge">Role Switch: {{ session.get('role', 'PATIENT') }}</span>
+          <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-sm">Dashboard</a>
+          <a href="{{ url_for('logout') }}" class="btn btn-outline btn-sm" title="Logout">Logout</a>
+        {% else %}
+          <a href="{{ url_for('login') }}" class="btn btn-outline btn-sm">Login</a>
+          <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm">Register</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Main Content Block -->
+  <div class="main-wrapper">
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <p>© 2026 MediCare Healthcare Management System. Outpatient Clinic & OPD Management.</p>
+      <p>Python 3 · Flask · SQLite3 · Academic Mini Project</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

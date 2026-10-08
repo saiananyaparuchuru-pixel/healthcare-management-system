@@ -1,0 +1,12 @@
+{
+  "name": "medicare-flask-sqlite",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "python3 app.py",
+    "start": "python3 app.py",
+    "build": "python3 -c \"import app; print('MediCare Flask build OK')\"",
+    "clean": "rm -rf __pycache__"
+  }
+}

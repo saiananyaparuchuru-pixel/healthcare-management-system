@@ -1,0 +1,6 @@
+{
+  "name": "MediCare – Healthcare Management System",
+  "description": "A comprehensive Outpatient Department (OPD) and Clinic Management System for patients, doctors, and administrators.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
